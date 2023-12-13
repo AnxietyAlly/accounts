@@ -67,6 +67,27 @@ export async function getSingleAccount(req, res) {
   }
 }
 
+export async function getSingleAccountBasedOnEmail(req, res) {
+  try {
+    const params = [req.params.email];
+    const stmnt = db.prepare(`SELECT * FROM accounts where email = ?`);
+    const row = stmnt.get(params);
+
+    const jsonToSend = {
+      meta: {
+        name: "Single account based on name",
+        title: "Specific account based on name",
+        date: getToday(),
+        originalUrl: `${req.originalUrl}`,
+      },
+      data: row,
+    };
+    res.status(200).json(jsonToSend);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 export async function makeNewAccount(req, res) {
   const body = req.body;
 

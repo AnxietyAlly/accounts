@@ -4,6 +4,7 @@ import {
   getAllAccounts,
   getSingleAccount,
   makeNewAccount,
+  getSingleAccountBasedOnEmail
 } from '../controllers/accountsController.js';
 const router = express.Router();
 
@@ -30,7 +31,8 @@ router.options('/accounts', (req, res, next) => {
 
 // get a collection of all the accounts, you can also use a query
 router.get('/accounts', cors(), getAllAccounts);
-router.get('/accounts/:id', cors(), getSingleAccount);
+router.get('/accounts/id/:id', cors(), getSingleAccount);
+router.get('/accounts/email/:email', cors(), getSingleAccountBasedOnEmail);
 router.post('/accounts', cors(), makeNewAccount);
 
 export default router;
