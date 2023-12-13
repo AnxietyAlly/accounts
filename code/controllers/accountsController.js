@@ -102,15 +102,6 @@ export async function makeNewAccount(req, res) {
   }
 }
 
-// export async function createAccount(name, email, password) {
-//   const sql = `
-//   insert into accounts (name, email, password)
-//   values ($name, $email, $password)`;
-
-//   const stmnt = db.prepare(sql);
-//   stmnt.run({ name, email, password });
-// }
-
 export async function checkUserCredentials(name, email, password) {
   const sql = `
     select password

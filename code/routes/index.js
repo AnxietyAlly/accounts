@@ -1,16 +1,11 @@
 import express from 'express';
 import cors from 'cors';
-import bodyParser from 'body-parser';
 import {
   getAllAccounts,
   getSingleAccount,
   makeNewAccount,
-  // createAccount
 } from '../controllers/accountsController.js';
 const router = express.Router();
-
-// router.use(bodyParser.json());
-// router.use(bodyParser.urlencoded({ extended: false }));
 
 // routes
 router.get('/', (req, res, next) => {
