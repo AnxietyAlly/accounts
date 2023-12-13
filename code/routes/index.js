@@ -5,8 +5,8 @@ import {
   getAllAccounts,
   getSingleAccount,
   makeNewAccount,
+  createAccount
 } from '../controllers/accountsController.js';
-import { createUser } from '../lib/server/db/index.js';
 const router = express.Router();
 
 // router.use(bodyParser.json());
@@ -39,8 +39,8 @@ router.get('/', (req, res, next) => {
 // });
 
 // get a collection of all the accounts, you can also use a query
-// router.get('/accounts', cors(), getAllAccounts);
-// router.get('/accounts/:id', cors(), getSingleAccount);
-// router.post('/accounts', cors(), createUser);
+router.get('/accounts', cors(), getAllAccounts);
+router.get('/accounts/:id', cors(), getSingleAccount);
+router.post('/accounts', cors(), createAccount);
 
 export default router;
