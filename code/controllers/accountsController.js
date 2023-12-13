@@ -1,5 +1,6 @@
 import Database from "better-sqlite3";
 import * as dotenv from "dotenv";
+import bcrypt from "bcrypt";
 dotenv.config({ path: "variables.env" });
 
 const db = new Database(process.env.DB_PATH, { verbose: console.log });
@@ -68,6 +69,9 @@ export async function getSingleAccount(req, res) {
 
 export async function makeNewAccount(req, res) {
   const body = req.body;
+
+  const hashedPassword = await bcrypt.hash(body.password, 12);
+
   const stmnt = db.prepare(
     "INSERT INTO accounts (name, email, password) VALUES (?, ?, ?)"
   );
@@ -83,7 +87,7 @@ export async function makeNewAccount(req, res) {
   ) {
     if (!(body.name == "" || body.email == "" || body.password == "")) {
       try {
-        stmnt.run(body.name, body.email, body.password);
+        stmnt.run(body.name, body.email, hashedPassword);
       } catch (err) {
         res.send(err);
       }
@@ -98,14 +102,14 @@ export async function makeNewAccount(req, res) {
   }
 }
 
-export async function createAccount(name, email, password) {
-  const sql = `
-  insert into accounts (name, email, password)
-  values ($name, $email, $password)`;
+// export async function createAccount(name, email, password) {
+//   const sql = `
+//   insert into accounts (name, email, password)
+//   values ($name, $email, $password)`;
 
-  const stmnt = db.prepare(sql);
-  stmnt.run({ name, email, password });
-}
+//   const stmnt = db.prepare(sql);
+//   stmnt.run({ name, email, password });
+// }
 
 export async function checkUserCredentials(name, email, password) {
   const sql = `
