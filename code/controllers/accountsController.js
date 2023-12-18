@@ -39,7 +39,7 @@ export async function getAllAccounts(req, res) {
       data: [],
     };
     for (let i = 0; i < rows.length; i++) {
-      jsonToSend.data.push(`/accounts/${rows[i].id}`);
+      jsonToSend.data.push(`/accounts/id/${rows[i].id}`);
     }
     res.status(200).json(jsonToSend);
   } catch (err) {
