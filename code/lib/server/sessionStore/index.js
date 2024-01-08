@@ -18,7 +18,7 @@ function clean() {
     nextClean = Date.now() + 1000 * 60 * 60; // 1 hour
 }
 
-export function createSession(name, maxAge) {
+export function createSession(name, email, maxAge) {
     let sid = '';
 
     do {
@@ -27,6 +27,7 @@ export function createSession(name, maxAge) {
 
     sessionStore.set(sid, {
         name,
+        email,
         invalidAt: Date.now() + maxAge,
     });
 
