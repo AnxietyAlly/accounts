@@ -142,7 +142,7 @@ export async function updateAccount(req, res) {
 
   const hashedPassword = await bcrypt.hash(body.password, 12);
 
-  const otherAccountWithNewEmail = getApiData(`https://aa-accounts-ms-sprint-3.onrender.com/accounts/email/${newEmail}`);
+  const otherAccountWithNewEmail = getApiData(`https://aa-accounts-ms-sprint-3.onrender.com/accounts/email/${body.newEmail}`);
 
   const stmnt = db.prepare(
     "UPDATE accounts SET name = ?, email = ?, password = ? WHERE email = ?"
@@ -160,7 +160,7 @@ export async function updateAccount(req, res) {
     )
   ) {
     if (!(body.name == "" || body.email == "" || body.password == "")) {
-      if (otherAccountWithNewEmail.data == undefined || otherAccountWithNewEmail == null) {
+      if (otherAccountWithNewEmail.data == undefined || otherAccountWithNewEmail.data == null) {
         try {
           stmnt.run(body.name, body.newEmail, hashedPassword, body.oldEmail);
         } catch (err) {
