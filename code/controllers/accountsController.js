@@ -5,6 +5,20 @@ dotenv.config({ path: "variables.env" });
 
 const db = new Database(process.env.DB_PATH, { verbose: console.log });
 
+/**
+	 * Async function to get the data from the SWAPI api
+	 * @returns - returns a promise
+	 */
+async function getApiData(url) {
+  try {
+    let response = await fetch(url);
+    let returnedResponse = await response.json();
+    return returnedResponse;
+  } catch (err) {
+    console.error('Error: ', err);
+  }
+}
+
 function getToday() {
   const date = new Date();
   let day = date.getDate();
@@ -115,6 +129,49 @@ export async function makeNewAccount(req, res) {
       res.send(
         `New row inserted with values name (${body.name}) and email (${body.email})`
       );
+    } else {
+      res.send("Values cannot be empty");
+    }
+  } else {
+    res.send("One of the values was missing");
+  }
+}
+
+export async function updateAccount(req, res) {
+  const body = req.body;
+
+  const hashedPassword = await bcrypt.hash(body.password, 12);
+
+  const otherAccountWithNewEmail = getApiData(`https://aa-accounts-ms-sprint-3.onrender.com/accounts/email/${body.newEmail}`);
+
+  const stmnt = db.prepare(
+    "UPDATE accounts SET name = ?, email = ?, password = ? WHERE email = ?"
+  );
+  if (
+    !(
+      body.name == null ||
+      body.name == undefined ||
+      body.newEmail == null ||
+      body.newEmail == undefined ||
+      body.password == null ||
+      body.password == undefined || 
+      body.oldEmail == null ||
+      body.oldEmail == undefined
+    )
+  ) {
+    if (!(body.name == "" || body.email == "" || body.password == "")) {
+      if (otherAccountWithNewEmail.data == undefined || otherAccountWithNewEmail.data == null) {
+        try {
+          stmnt.run(body.name, body.newEmail, hashedPassword, body.oldEmail);
+        } catch (err) {
+          res.send(err);
+        }
+        res.send(
+          `Row updated with values name (${body.name}) and email (${body.newEmail})`
+        );
+      } else {
+        res.send("Other account already has that email");
+      }
     } else {
       res.send("Values cannot be empty");
     }
