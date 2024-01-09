@@ -35,6 +35,6 @@ router.get('/accounts', cors(), getAllAccounts);
 router.get('/accounts/id/:id', cors(), getSingleAccount);
 router.get('/accounts/email/:email', cors(), getSingleAccountBasedOnEmail);
 router.post('/accounts', cors(), makeNewAccount);
-router.post('/accounts/update/name/:name/newEmail/:newEmail/password/:password/oldEmail/:oldEmail', cors(), updateAccount);
+router.post('/accounts/update', cors(), updateAccount);
 
 export default router;
