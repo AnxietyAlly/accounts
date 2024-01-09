@@ -160,7 +160,7 @@ export async function updateAccount(req, res) {
     )
   ) {
     if (!(body.name == "" || body.email == "" || body.password == "")) {
-      if (otherAccountWithNewEmail.data == undefined || otherAccountWithNewEmail.data == null) {
+      if ((otherAccountWithNewEmail.data == undefined || otherAccountWithNewEmail.data == null) || (newEmail === oldEmail)) {
         try {
           stmnt.run(body.name, body.newEmail, hashedPassword, body.oldEmail);
         } catch (err) {
