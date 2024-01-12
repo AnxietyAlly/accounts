@@ -5,6 +5,7 @@ import {
   getSingleAccount,
   makeNewAccount,
   updateAccount,
+  removeAccount,
   getSingleAccountBasedOnEmail
 } from '../controllers/accountsController.js';
 const router = express.Router();
@@ -36,5 +37,6 @@ router.get('/accounts/id/:id', cors(), getSingleAccount);
 router.get('/accounts/email/:email', cors(), getSingleAccountBasedOnEmail);
 router.post('/accounts', cors(), makeNewAccount);
 router.post('/accounts/update', cors(), updateAccount);
+router.post('/accounts/delete', cors(), removeAccount());
 
 export default router;
