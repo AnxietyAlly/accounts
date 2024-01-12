@@ -180,6 +180,24 @@ export async function updateAccount(req, res) {
   }
 }
 
+export async function removeAccount(req, res) {
+  const body = req.body;
+
+  const stmnt = db.prepare(
+    "DELETE FROM accounts WHERE email = ?"
+  );
+
+  try {
+    stmnt.run(body.email);
+  } catch (err) {
+    res.send(err);
+  };
+
+  res.send(
+    `Row with value email (${body.email}) deleted`
+  );
+}
+
 export async function checkUserCredentials(name, email, password) {
   const sql = `
     select password
